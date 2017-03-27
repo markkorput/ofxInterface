@@ -27,7 +27,7 @@ class Node : public ofNode
 {
 	friend class TouchManager;
 	friend class TouchEvent;
-	
+
 public:
 	virtual ~Node();
 	Node();
@@ -47,6 +47,7 @@ public:
      * Adding & Removing childNodes
      */
 	void addChild(Node* child, int insertAt=-1, bool bMaintainChildGlobalTransform=false);		// append by default
+	void invertY(Node* child, bool recursive=true);
 	Node* removeChild(Node *child, bool bMaintainChildGlobalTransform=false);
 	Node* removeChild(int index, bool bMaintainChildGlobalTransform=false);
 	int getNumChildren() const { return (int)childNodes.size(); }
@@ -69,7 +70,7 @@ public:
 	 * for touch event handling
 	 *
 	 * override to return if a point is inside the node.
-	 * default implementation works only if your component is 
+	 * default implementation works only if your component is
 	 * rectangular and you set the size.
 	 */
 	virtual bool contains(const ofVec3f& globalPoint);
@@ -100,7 +101,7 @@ public:
 	 */
 	void render(bool forceAll = false);
 	void renderDebug(bool forceAll = false);	// same as render but calls drawDebug instead of draw.
-    
+
     /******
      * call the 'update' function of !!visible!! children
      */
@@ -141,7 +142,7 @@ public:
 	ofEvent<Node> eventPositionChanged;
 	ofEvent<Node> eventScaleChanged;
 	ofEvent<Node> eventOrientationChanged;
-    
+
     /******
      * For convenience:
      *
@@ -151,7 +152,7 @@ public:
     void setCenteredV();
     void setCentered();
 
-    
+
 	// when rendering, nodes will be sorted by plane number (float)
 	float getPlane() const { return plane; }
 	void setPlane(float _plane) { plane = _plane; }
@@ -183,14 +184,14 @@ public:
 	ofVec2f getGlobalCenter(){ return toGlobal(getPosition() + size * 0.5f); }
 
 	virtual ofRectangle getBounds() { return ofRectangle(getX(), getY(), getWidth(), getHeight()); }
-    
+
     /******
      * resizing events
      *
      * register to get events when settings the size
      */
     ofEvent<Node> eventNodeSizeChanged;
-    
+
     /******
      * translate local and global space points
      */
@@ -215,7 +216,7 @@ public:
 	// setReceivingTouch(false) does not prevent decendents in the tree from receiving touch events
 	void setReceivingTouch(bool set) { bReceivingTouch = set; }
 	bool getReceivingTouch() { return bReceivingTouch; }
-    
+
     /******
      * visiblity & enable events
      *
@@ -247,7 +248,7 @@ public:
 	void getVisibleSubTreeList(std::list<Node*>& list);
     // returns a list of enabled elements in subtree
     void getEnabledSubTreeList(std::list<Node*>& list);
-	
+
 	/******
      * Scene sorting
      *

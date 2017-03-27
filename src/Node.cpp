@@ -216,7 +216,7 @@ void Node::updateSubtree(float dt, bool forceAll)
 	update(dt);
 
     std::vector<Node*>::iterator it;
-    
+
     for (it = childNodes.begin(); it != childNodes.end(); it++)
     {
 		if (forceAll) {
@@ -424,7 +424,7 @@ ofVec3f Node::toLocal(const ofVec3f &screenPoint)
 	return (ofVec3f)screenPoint*ofNode::getGlobalTransformMatrix().getInverse();
 	#endif
 }
-    
+
 ofVec3f Node::toGlobal(const ofVec3f &localPoint)
 {
     return (ofVec3f)localPoint*ofNode::getGlobalTransformMatrix();
@@ -436,14 +436,14 @@ void Node::setVisible(bool visible)
     bool bSendDisappear = !visible && bVisible;
     std::list<Node*> nodes;
     std::list<Node*>::iterator it;
-    
+
     if (bSendDisappear) {
         // get visible nodes DEFORE we make outselves invisible
         getVisibleSubTreeList(nodes);
     }
-    
+
     bVisible = visible;
-    
+
     // notify appear events
     if (bSendAppear) {
         // get visible nodes AFTER we make ourselves visible
@@ -452,7 +452,7 @@ void Node::setVisible(bool visible)
             ofNotifyEvent((*it)->eventNodeDidAppear, *(*it), this);
         }
     }
-    
+
     // send disappear events
     if (bSendDisappear) {
         for (it = nodes.begin(); it != nodes.end(); it++) {
@@ -477,14 +477,14 @@ void Node::setEnabled(bool enable)
     bool bSendDisabled = !enable && bEnabled;
     std::list<Node*> nodes;
     std::list<Node*>::iterator it;
-    
+
     if (bSendDisabled) {
         // get visible nodes DEFORE we make outselves invisible
         getEnabledSubTreeList(nodes);
     }
-    
+
     bEnabled = enable;
-    
+
     // notify appear events
     if (bSendEnabled) {
         // get visible nodes AFTER we make ourselves visible
@@ -493,7 +493,7 @@ void Node::setEnabled(bool enable)
             ofNotifyEvent((*it)->eventNodeWasEnabled, *(*it), this);
         }
     }
-    
+
     // send disappear events
     if (bSendDisabled) {
         for (it = nodes.begin(); it != nodes.end(); it++) {
@@ -511,7 +511,7 @@ bool Node::getEnabledGlobally() const
         return bEnabled && ((Node*)parent)->getEnabledGlobally();
     }
 }
-    
+
 bool Node::contains(const ofVec3f &globalPoint)
 {
 	ofVec2f local = toLocal(globalPoint);
@@ -539,6 +539,24 @@ void Node::addChild(Node *child, int insertAt, bool bMaintainChildGlobalTransfor
 	}
 
 	ofNotifyEvent(eventChildAdded, *child, this);
+}
+
+// inverts y-axis of the specified child node (and its
+// children, if recursive == true).
+// Useful when dealing with mixed 3D (y+ is UP) and
+// 2D (y+ is DOWN) systems.
+// It doesn't check (or care) if the specified child is actually
+// in childNodes, but to invert a node, you need "parent's" height.
+void Node::invertY(Node* child, bool recursive){
+	float dy = child->getY() + child->getHeight() * child->getScale().y;
+
+	child->setY(this->getHeight() - dy);
+
+	if(recursive){
+		for(auto& grandChild : child->getChildren()){
+			child->invertY(grandChild, recursive);
+		}
+	}
 }
 
 Node* Node::removeChild(Node *child, bool bMaintainChildGlobalTransform)
@@ -588,22 +606,22 @@ void Node::getVisibleSubTreeList(std::list<Node*>& list)
 	if (!getVisible()) {
 		return;
 	}
-	
+
 	list.push_back(this);
 
 	for (int i=0; i<childNodes.size(); i++) {
 		childNodes[i]->getVisibleSubTreeList(list);
 	}
 }
-    
+
 void Node::getEnabledSubTreeList(std::list<Node *> &list)
 {
     if (!getEnabled()) {
         return;
     }
-    
+
     list.push_back(this);
-    
+
     for (int i=0; i<childNodes.size(); i++) {
         childNodes[i]->getEnabledSubTreeList(list);
     }
@@ -667,4 +685,3 @@ float Node::getAngleTo(ofxInterface::Node *node)
 }
 
 } // namespace
-
