@@ -547,14 +547,14 @@ void Node::addChild(Node *child, int insertAt, bool bMaintainChildGlobalTransfor
 // 2D (y+ is DOWN) systems.
 // It doesn't check (or care) if the specified child is actually
 // in childNodes, but to invert a node, you need "parent's" height.
-void Node::invertY(Node* child, bool recursive){
-	float dy = child->getY() + child->getHeight() * child->getScale().y;
+void Node::invertY(Node& child, bool recursive){
+	float dy = child.getY() + child.getHeight() * child.getScale().y;
 
-	child->setY(this->getHeight() - dy);
+	child.setY(this->getHeight() - dy);
 
 	if(recursive){
-		for(auto& grandChild : child->getChildren()){
-			child->invertY(grandChild, recursive);
+		for(auto& grandChild : child.getChildren()){
+			child.invertY(*grandChild, recursive);
 		}
 	}
 }

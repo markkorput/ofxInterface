@@ -47,7 +47,7 @@ public:
      * Adding & Removing childNodes
      */
 	void addChild(Node* child, int insertAt=-1, bool bMaintainChildGlobalTransform=false);		// append by default
-	void invertY(Node* child, bool recursive=true);
+	void invertY(Node& child, bool recursive=true);
 	Node* removeChild(Node *child, bool bMaintainChildGlobalTransform=false);
 	Node* removeChild(int index, bool bMaintainChildGlobalTransform=false);
 	int getNumChildren() const { return (int)childNodes.size(); }
