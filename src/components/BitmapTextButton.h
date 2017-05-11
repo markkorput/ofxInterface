@@ -21,7 +21,7 @@ class BitmapTextButton : public Node
 {
 public:
 
-	void setup(const string& label);
+	void setup(const string& label, bool setname=true);
 
 	void setBackground(bool set) { bDrawBackground = set; }
 	void setBorder(bool set) { bDrawBorder = set; }
