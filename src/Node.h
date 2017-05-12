@@ -59,6 +59,7 @@ public:
 	// functions to override
 	//
 	virtual void update(float dt) {}	// please override with update code
+    using ofNode::draw;
 	virtual void draw() {};		// please override! draw your object in local space
 
 	// for debugging
