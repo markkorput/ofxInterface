@@ -64,9 +64,9 @@ class ofApp: public ofxUnitTestsApp{
             delete rootNode;
             test_eq(ofJoinString(result, " -> "), "Destruct-Root", "");
 
-            // delete childB;
-            // delete childA;
-            // test_eq(ofJoinString(result, " -> "), "Destruct-Root -> Destruct-B -> Destruct-A", "");
+            delete childB;
+            delete childA;
+            test_eq(ofJoinString(result, " -> "), "Destruct-Root -> Destruct-B -> Destruct-A", "");
         TEST_END
     }
 };
