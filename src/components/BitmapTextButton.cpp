@@ -11,11 +11,12 @@
 namespace ofxInterface
 {
 
-void BitmapTextButton::setup(const string &_label)
+void BitmapTextButton::setup(const string &_label, bool setname)
 {
 	label = _label;
 	setSize(label.length()*8 + 10, 20);
-    setName(label);
+    if(setname)
+        setName(label);
 
 	bDrawBorder = true;
 	bDrawBackground = true;
