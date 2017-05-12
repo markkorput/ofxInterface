@@ -28,29 +28,45 @@ public:
 class ofApp: public ofxUnitTestsApp{
     void run(){
         TEST_START(delete children on remove)
+            vector<string> result;
             CustomNode *rootNode, *childA, *childB;
+
             rootNode = new CustomNode();
             childA = new CustomNode();
             childB = new CustomNode();
 
-            vector<string> result;
-            rootNode->destructorFunc = [&result](){
-                result.push_back("Destruct-Root");
-            };
-
-            childA->destructorFunc = [&result](){
-                result.push_back("Destruct-A");
-            };
-
-            childB->destructorFunc = [&result](){
-                result.push_back("Destruct-B");
-            };
+            rootNode->destructorFunc = [&result](){ result.push_back("Destruct-Root"); };
+            childA->destructorFunc = [&result](){ result.push_back("Destruct-A"); };
+            childB->destructorFunc = [&result](){ result.push_back("Destruct-B"); };
 
             rootNode->addChild(childA);
             rootNode->addChild(childB);
             delete rootNode;
 
             test_eq(ofJoinString(result, " -> "), "Destruct-Root -> Destruct-A -> Destruct-B", "");
+        TEST_END
+
+        TEST_START(don not delete children on remove)
+            vector<string> result;
+            CustomNode *rootNode, *childA, *childB;
+
+            rootNode = new CustomNode();
+            childA = new CustomNode();
+            childB = new CustomNode();
+
+            rootNode->destructorFunc = [&result](){ result.push_back("Destruct-Root"); };
+            childA->destructorFunc = [&result](){ result.push_back("Destruct-A"); };
+            childB->destructorFunc = [&result](){ result.push_back("Destruct-B"); };
+
+            rootNode->addChild(childA);
+            rootNode->addChild(childB);
+            rootNode->setDeleteChildren(false);
+            delete rootNode;
+            test_eq(ofJoinString(result, " -> "), "Destruct-Root", "");
+
+            // delete childB;
+            // delete childA;
+            // test_eq(ofJoinString(result, " -> "), "Destruct-Root -> Destruct-B -> Destruct-A", "");
         TEST_END
     }
 };
