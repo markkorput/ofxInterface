@@ -30,6 +30,7 @@ public:
 	void setBGColor(const ofColor& c) { bgColor = c; }
 	void setBorderColor(const ofColor& c) { borderColor = c; }
 
+	void setLabel(const string& txt, bool resize=true);
 	void draw();
 
 private:

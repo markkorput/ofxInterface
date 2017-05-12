@@ -13,8 +13,7 @@ namespace ofxInterface
 
 void BitmapTextButton::setup(const string &_label, bool setname)
 {
-	label = _label;
-	setSize(label.length()*8 + 10, 20);
+    setLabel(_label, true /* resize */);
     if(setname)
         setName(label);
 
@@ -45,5 +44,10 @@ void BitmapTextButton::draw()
 	}
 }
 
+void BitmapTextButton::setLabel(const string& txt, bool resize){
+    label = txt;
+    if(resize)
+        setSize(label.length()*8 + 10, 20);
+}
 
 } 	// namespace
