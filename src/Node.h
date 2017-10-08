@@ -184,6 +184,7 @@ public:
 	ofVec2f getGlobalCenter(){ return toGlobal(getPosition() + size * 0.5f); }
 
 	virtual ofRectangle getBounds() { return ofRectangle(getX(), getY(), getWidth(), getHeight()); }
+  virtual ofRectangle getBoundsGlobal() { return ofRectangle(toGlobal(ofVec3f(0.0f)), getGlobalWidth(), getGlobalHeight()); }
 
     /******
      * resizing events

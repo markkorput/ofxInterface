@@ -37,7 +37,7 @@ void SolidColorPanel::draw()
 
 	if (bDrawBorder) {
 		ofNoFill();
-		ofSetLineWidth(2);
+		ofSetLineWidth(this->lineWidth);
 		ofSetColor(strokeColor);
 		if (bRounded) {
 			ofDrawRectRounded(0, 0, getWidth(), getHeight(), roundAngle);

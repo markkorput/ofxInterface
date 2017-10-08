@@ -20,6 +20,7 @@ namespace ofxInterface {
 class SolidColorPanel : public ofxInterface::Node
 {
 public:
+	SolidColorPanel() : lineWidth(2.0f){}
 	void setup(float w, float h);
 
     void setBGColor(const ofColor& c) { bgColor = c; }
@@ -28,6 +29,9 @@ public:
 	void setBorder(bool set) { bDrawBorder = set; }
 	void setRounded(bool set) { bRounded = set; }
 	void setRoundAngle(float ang) { roundAngle = ang; }
+
+	float getLineWidth() const { return lineWidth; }
+	void setLineWidth(float w){ lineWidth = w; }
 
 	void draw();
 
@@ -39,8 +43,9 @@ private:
 
 	ofColor bgColor;
 	ofColor strokeColor;
+	float lineWidth;
 };
-    
+
 }   // namespace
 
 #endif /* defined(__ofxInterface__SolidColorPanel__) */
